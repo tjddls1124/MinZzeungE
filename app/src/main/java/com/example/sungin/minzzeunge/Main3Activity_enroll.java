@@ -15,8 +15,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class Main3Activity_enroll extends AppCompatActivity {
     Spinner spn;
@@ -25,6 +30,10 @@ public class Main3Activity_enroll extends AppCompatActivity {
     static final int PICK_FROM_ALBUM = 1;
     static final int CROP_FROM_iMAGE = 2;
     ImageView imageView;
+    boolean SettingPhoto = false;
+    Bitmap photo;
+    String min_kind;
+    String fileDir;
 
     Person enrollPerson;
     /*
@@ -42,14 +51,11 @@ public class Main3Activity_enroll extends AppCompatActivity {
         final String[] kind = new String[]{"주민등록증", "운전면허증", "학생증"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, kind);
         spn = (Spinner) findViewById(R.id.spinner);
-
-        String min_kind = spn.getTransitionName();
-
-
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         spn.setAdapter(adapter);
         spn.setPrompt("신분증 종류를 선택 하세요");
+
+
     }
 
     public void onClick(View v) {
@@ -70,6 +76,29 @@ public class Main3Activity_enroll extends AppCompatActivity {
             })
                     .show();
         }
+        if (v.getId() == R.id.button_enroll) {
+
+            if (SettingPhoto) {
+                min_kind = (String) spn.getSelectedItem();
+                Intent intent = getIntent();
+                enrollPerson= intent.getParcelableExtra("MSG_PERSONDATA");
+                enrollPerson.kind = min_kind;
+                enrollPerson.filePath = fileDir;
+                Toast.makeText(getApplicationContext(),enrollPerson.filePath,Toast.LENGTH_SHORT).show();
+                intent.putExtra("remakemsg",enrollPerson);
+                setResult(RESULT_OK,intent);
+                finish();
+            } else
+                Toast.makeText(getApplicationContext(), "신분증 사진을 등록하세요", Toast.LENGTH_SHORT).show();
+
+        }
+        if(v.getId()==R.id.button_cancel){
+            Intent intent = getIntent();
+            finish();
+        }
+
+
+
     }
 
     public void doTakePhotoAction() // 카메라 촬영 후 이미지 가져오기
@@ -86,8 +115,30 @@ public class Main3Activity_enroll extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
+    }
+    public void storeCropImage(Bitmap bitmap, String filePath) {
+        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MinZzeungE";
+        File directory_MinZzeungE = new File(dirPath);
+        if (!directory_MinZzeungE.exists()) // SmartWheel 디렉터리에 폴더가 없다면 (새로 이미지를 저장할 경우에 속한다.)
+            directory_MinZzeungE.mkdir();
+
+        File copyFile = new File(filePath);
+        BufferedOutputStream out = null;
+
+        try {
+            copyFile.createNewFile();
+            out = new BufferedOutputStream(new FileOutputStream(copyFile));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 
 
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                    Uri.fromFile(copyFile)));
+
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -100,7 +151,7 @@ public class Main3Activity_enroll extends AppCompatActivity {
         switch (requestCode) {
             case PICK_FROM_ALBUM: {
                 mImageCaptureUri = data.getData();
-                Log.d("SmartWheel", mImageCaptureUri.getPath().toString());
+                Log.d("MinZzeungE", mImageCaptureUri.getPath().toString());
             }
             case PICK_FROM_CAMERA: {
                 Intent intent = new Intent("com.android.camera.action.CROP");
@@ -128,12 +179,30 @@ public class Main3Activity_enroll extends AppCompatActivity {
                 final Bundle extras = data.getExtras();
 
                 // CROP된 이미지를 저장하기 위한 FILE 경로
+
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() +
                         "/MinZzeungE/" + System.currentTimeMillis() + ".jpg";
+                fileDir = getFilesDir() +"/MinZzeungE/" +System.currentTimeMillis()+".jpg";
+
+
 
                 if (extras != null) {
-                    Bitmap photo = extras.getParcelable("data"); // CROP된 BITMAP
+                    photo = extras.getParcelable("data"); // CROP된 BITMAP
                     imageView.setImageBitmap(photo); // 레이아웃의 이미지칸에 CROP된 BITMAP을 보여줌
+                    FileOutputStream fileOutputStream = null;
+                    try {
+                        fileOutputStream = new FileOutputStream(fileDir);
+                        photo.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+                        fileOutputStream.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    storeCropImage(photo,filePath);
+
+                    SettingPhoto = true;
                     break;
                 }
 

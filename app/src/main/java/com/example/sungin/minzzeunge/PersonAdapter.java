@@ -1,6 +1,8 @@
 package com.example.sungin.minzzeunge;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,12 +56,16 @@ public class PersonAdapter extends BaseAdapter {
             TextView textView_propreties = (TextView)convertView.findViewById(R.id.textView_Properties);
             Person thePerson = data.get(position);
 
-            textView_name.setText("이름 : "+thePerson.name);
+            textView_name.setText("이름 : "+thePerson.name+"**"+thePerson.filePath + "**"+thePerson.kind);
             textView_MinNum.setText("주민등록 번호 :" +thePerson.minNumFirst + "-"+ thePerson.minNumLast);
             textView_propreties.setText("("+thePerson.age+ "세, "+thePerson.gender+")");
             if(thePerson.gender.equals("남")) textView_propreties.setTextColor(Color.BLUE);
             else textView_propreties.setTextColor(Color.YELLOW);
 
+            if(thePerson.filePath !=null){
+                Bitmap bitmap = BitmapFactory.decodeFile(thePerson.filePath);
+                imageView.setImageBitmap(bitmap);
+            }
         }
         return convertView;
     }

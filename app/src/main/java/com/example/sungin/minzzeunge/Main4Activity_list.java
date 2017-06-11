@@ -8,21 +8,26 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class Main4Activity_list extends AppCompatActivity {
     ListView listView;
     Button bt_add;
-    int REQUEST_MSG_CODE = 1;
+   static final int REQUEST_MSG_CODE = 1;
+    Person person;
+    ArrayList<Person> personList = new ArrayList<>();
+    PersonAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4_list);
         init();
+        person = new Person(null,"","최성인","930215","1*****","1111");
 
-        ArrayList<Person> personList = new ArrayList<>();
-        PersonAdapter adapter = new PersonAdapter(personList, this);
+        adapter = new PersonAdapter(personList, this);
         listView.setAdapter(adapter);
 
 
@@ -38,7 +43,22 @@ public class Main4Activity_list extends AppCompatActivity {
     public void onClick(View v){
         if( v.getId()==R.id.button_Add) {
             Intent intent = new Intent(this, Main3Activity_enroll.class);
-            startActivity(intent);
+            intent.putExtra("MSG_PERSONDATA",person);
+            startActivityForResult(intent,REQUEST_MSG_CODE);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(REQUEST_MSG_CODE==requestCode) {
+            if(resultCode ==RESULT_OK){
+                Person thisPerson;
+                thisPerson = data.getParcelableExtra("remakemsg");
+                personList.add(thisPerson);
+                Toast.makeText(getApplicationContext(),thisPerson.filePath,Toast.LENGTH_SHORT).show();
+                adapter.notifyDataSetChanged();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
