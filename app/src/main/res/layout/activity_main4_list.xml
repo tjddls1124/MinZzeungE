@@ -8,7 +8,8 @@
     tools:context="com.example.sungin.minzzeunge.Main4Activity_list">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_Add"
+        android:onClick="onClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"

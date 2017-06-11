@@ -7,26 +7,44 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="130dp"
         app:srcCompat="@drawable/min_phone" />
 
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:text="TextView" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="71dp"
-            android:text="TextView" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textView_Name"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:text="이름 : " />
+
+            <TextView
+                android:id="@+id/textView_Properties"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="( 세, 남)" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView_MinNum"
+                android:layout_width="wrap_content"
+                android:layout_height="74dp"
+                android:text="주민등록번호 : " />
+        </TableRow>
+
+    </TableLayout>
 
 </LinearLayout>
