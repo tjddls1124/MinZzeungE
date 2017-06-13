@@ -47,7 +47,6 @@ public class PersonAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
             convertView =
                     LayoutInflater.from(context).inflate(R.layout.list_layout, null);
             ImageView imageView = (ImageView)convertView.findViewById(R.id.imageView);
@@ -68,7 +67,6 @@ public class PersonAdapter extends BaseAdapter {
                 Bitmap bitmap = BitmapFactory.decodeFile(thePerson.filePath);
                 imageView.setImageBitmap(bitmap);
             }
-        }
         return convertView;
     }
 }

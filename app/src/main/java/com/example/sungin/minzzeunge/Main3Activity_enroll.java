@@ -130,7 +130,7 @@ public class Main3Activity_enroll extends AppCompatActivity {
         try {
             copyFile.createNewFile();
             out = new BufferedOutputStream(new FileOutputStream(copyFile));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
 
             sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
@@ -183,8 +183,8 @@ public class Main3Activity_enroll extends AppCompatActivity {
                 // CROP된 이미지를 저장하기 위한 FILE 경로
 
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                        "/MinZzeungE/" + System.currentTimeMillis() + ".jpg";
-                fileDir = getFilesDir()+""+System.currentTimeMillis()+".jpg";
+                        "/MinZzeungE/" + System.currentTimeMillis() + ".png";
+                fileDir = getFilesDir()+""+System.currentTimeMillis()+".png";
 
 
 
@@ -194,7 +194,7 @@ public class Main3Activity_enroll extends AppCompatActivity {
                     FileOutputStream fileOutputStream = null;
                     try {
                         fileOutputStream = new FileOutputStream(fileDir);
-                        photo.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+                        photo.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
                         fileOutputStream.close();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
