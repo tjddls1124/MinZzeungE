@@ -20,13 +20,13 @@ import java.util.ArrayList;
 
 public class PersonAdapter extends BaseAdapter {
     ArrayList<Person> data = new ArrayList<>();
-    private ArrayList<Person> oriData = data;
+//    private ArrayList<Person> oriData = data;
     Context context;
-    Filter listFilter;
+//    Filter listFilter;
 
     public PersonAdapter(ArrayList<Person> data, Context context) {
         this.data = data;
-        this.oriData = data;
+//        this.oriData = data;
         this.context = context;
     }
 
@@ -53,14 +53,16 @@ public class PersonAdapter extends BaseAdapter {
             ImageView imageView = (ImageView)convertView.findViewById(R.id.imageView);
             TextView textView_name =(TextView)convertView.findViewById(R.id.textView_Name);
             TextView textView_MinNum = (TextView)convertView.findViewById(R.id.textView_MinNum);
-            TextView textView_propreties = (TextView)convertView.findViewById(R.id.textView_Properties);
+            TextView textView_properties = (TextView)convertView.findViewById(R.id.textView_Properties);
+            TextView textView_kind = (TextView)convertView.findViewById(R.id.textView_kind);
             Person thePerson = data.get(position);
 
-            textView_name.setText("이름 : "+thePerson.name+"**"+thePerson.filePath + "**"+thePerson.kind);
-            textView_MinNum.setText("주민등록 번호 :" +thePerson.minNumFirst + "-"+ thePerson.minNumLast);
-            textView_propreties.setText("("+thePerson.age+ "세, "+thePerson.gender+")");
-            if(thePerson.gender.equals("남")) textView_propreties.setTextColor(Color.BLUE);
-            else textView_propreties.setTextColor(Color.YELLOW);
+            textView_name.setText("이름 : "+thePerson.name);
+            textView_MinNum.setText("주민등록 번호 :" +thePerson.minNumFirst + "-"+ thePerson.minNumLast.substring(0,1)+"******");
+            textView_properties.setText("("+thePerson.age+ "세, "+thePerson.gender+")");
+            textView_kind.setText(thePerson.kind);
+            if(thePerson.gender.equals("남")) textView_properties.setTextColor(Color.BLUE);
+            else textView_properties.setTextColor(Color.YELLOW);
 
             if(thePerson.filePath !=null){
                 Bitmap bitmap = BitmapFactory.decodeFile(thePerson.filePath);

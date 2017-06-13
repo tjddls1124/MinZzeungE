@@ -34,8 +34,8 @@ public class Main3Activity_enroll extends AppCompatActivity {
     Bitmap photo;
     String min_kind;
     String fileDir;
+    Person enrollPerson = null;
 
-    Person enrollPerson;
     /*
     사진앨범이나 카메라를 이용하여 사진정보를 받아오는 법은 인터넷을 통해 소스코드를 가져와 변형하였습니다
     출처 : http://jeongchul.tistory.com/287
@@ -47,6 +47,9 @@ public class Main3Activity_enroll extends AppCompatActivity {
         setContentView(R.layout.activity_main3_enroll);
 
         imageView = (ImageView) findViewById(R.id.imageView_photo);
+        Intent intent = getIntent();
+        enrollPerson = intent.getParcelableExtra("MSG_PERSONDATA");
+
 
         final String[] kind = new String[]{"주민등록증", "운전면허증", "학생증"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, kind);
@@ -77,14 +80,13 @@ public class Main3Activity_enroll extends AppCompatActivity {
                     .show();
         }
         if (v.getId() == R.id.button_enroll) {
-
             if (SettingPhoto) {
                 min_kind = (String) spn.getSelectedItem();
-                Intent intent = getIntent();
-                enrollPerson= intent.getParcelableExtra("MSG_PERSONDATA");
+                Intent intent = new Intent(Main3Activity_enroll.this, Main4Activity_list.class);
+
                 enrollPerson.kind = min_kind;
                 enrollPerson.filePath = fileDir;
-                Toast.makeText(getApplicationContext(),enrollPerson.filePath,Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),enrollPerson.filePath,Toast.LENGTH_SHORT).show();
                 intent.putExtra("remakemsg",enrollPerson);
                 setResult(RESULT_OK,intent);
                 finish();
@@ -119,7 +121,7 @@ public class Main3Activity_enroll extends AppCompatActivity {
     public void storeCropImage(Bitmap bitmap, String filePath) {
         String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MinZzeungE";
         File directory_MinZzeungE = new File(dirPath);
-        if (!directory_MinZzeungE.exists()) // SmartWheel 디렉터리에 폴더가 없다면 (새로 이미지를 저장할 경우에 속한다.)
+        if (!directory_MinZzeungE.exists()) //디렉터리에 폴더가 없다면 (새로 이미지를 저장할 경우)
             directory_MinZzeungE.mkdir();
 
         File copyFile = new File(filePath);
@@ -182,13 +184,13 @@ public class Main3Activity_enroll extends AppCompatActivity {
 
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() +
                         "/MinZzeungE/" + System.currentTimeMillis() + ".jpg";
-                fileDir = getFilesDir() +"/MinZzeungE/" +System.currentTimeMillis()+".jpg";
+                fileDir = getFilesDir()+""+System.currentTimeMillis()+".jpg";
 
 
 
                 if (extras != null) {
                     photo = extras.getParcelable("data"); // CROP된 BITMAP
-                    imageView.setImageBitmap(photo); // 레이아웃의 이미지칸에 CROP된 BITMAP을 보여줌
+                    imageView.setImageBitmap(photo); // 레이아웃의 이미지뷰에 CROP된 BITMAP을 보여줌
                     FileOutputStream fileOutputStream = null;
                     try {
                         fileOutputStream = new FileOutputStream(fileDir);

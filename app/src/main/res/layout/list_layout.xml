@@ -17,13 +17,30 @@
         android:orientation="vertical">
 
         <TableRow
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
+            android:layout_height="30dp" >
+
+            <TextView
+                android:id="@+id/textView_kind"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textSize="15dp"
+                android:layout_gravity="center"
+                android:textColor="#14681d"
+                android:text="주민등록증" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
             android:layout_height="match_parent" >
 
             <TextView
+                android:gravity="center_vertical"
                 android:id="@+id/textView_Name"
                 android:layout_width="wrap_content"
-                android:layout_height="56dp"
+                android:layout_height="46dp"
                 android:text="이름 : " />
 
             <TextView
@@ -41,7 +58,7 @@
             <TextView
                 android:id="@+id/textView_MinNum"
                 android:layout_width="wrap_content"
-                android:layout_height="74dp"
+                android:layout_height="54dp"
                 android:text="주민등록번호 : " />
         </TableRow>
 
