@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sungin.minzzeunge">
-
-    <application
+    <uses-permission android:name="android.permission.INTERNET" />    <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,7 +18,8 @@
         <activity android:name=".Main2Activity_login" />
         <activity android:name=".Main3Activity_enroll" />
         <activity android:name=".Main4Activity_list" />
-        <activity android:name=".Main5Activity_Data"></activity>
+        <activity android:name=".Main5Activity_Data" />
+        <activity android:name=".Main6Activity_certificate"></activity>
     </application>
 
 </manifest>

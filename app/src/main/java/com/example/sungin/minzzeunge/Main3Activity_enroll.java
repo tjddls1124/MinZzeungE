@@ -3,6 +3,7 @@ package com.example.sungin.minzzeunge;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -13,8 +14,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedOutputStream;
@@ -35,6 +38,7 @@ public class Main3Activity_enroll extends AppCompatActivity {
     String min_kind;
     String fileDir;
     Person enrollPerson = null;
+    Person modifyPerson = null;
 
     /*
     사진앨범이나 카메라를 이용하여 사진정보를 받아오는 법은 인터넷을 통해 소스코드를 가져와 변형하였습니다
@@ -46,19 +50,35 @@ public class Main3Activity_enroll extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3_enroll);
 
-        imageView = (ImageView) findViewById(R.id.imageView_photo);
-        Intent intent = getIntent();
-        enrollPerson = intent.getParcelableExtra("MSG_PERSONDATA");
+        Button bt = (Button)findViewById(R.id.button_enroll);
+        TextView tv = (TextView)findViewById(R.id.textView);
+        spn = (Spinner) findViewById(R.id.spinner);
 
-
+        /*
+        SetSpinner
+         */
         final String[] kind = new String[]{"주민등록증", "운전면허증", "학생증"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, kind);
-        spn = (Spinner) findViewById(R.id.spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spn.setAdapter(adapter);
         spn.setPrompt("신분증 종류를 선택 하세요");
 
-
+        imageView = (ImageView) findViewById(R.id.imageView_photo);
+        Intent intent = getIntent();
+        enrollPerson = intent.getParcelableExtra("MSG_PERSONDATA");
+        modifyPerson = intent.getParcelableExtra("MSG_MODIFY");
+        if(modifyPerson != null){ // 수정작업 진행 시  레이아웃 아이템들 설정변경
+            tv.setText("신분증 수정하기");
+            Bitmap bitmap = BitmapFactory.decodeFile(modifyPerson.filePath);
+            imageView.setImageBitmap(bitmap);
+            SettingPhoto = true;
+            bt.setText("신분증 수정완료");
+            if(modifyPerson.kind.equals("운전면허증"))
+                spn.setSelection(1);
+            else if (modifyPerson.kind.equals("학생증"))
+                spn.setSelection(2);
+            else spn.setSelection(0);
+        }
     }
 
     public void onClick(View v) {
@@ -83,11 +103,17 @@ public class Main3Activity_enroll extends AppCompatActivity {
             if (SettingPhoto) {
                 min_kind = (String) spn.getSelectedItem();
                 Intent intent = new Intent(Main3Activity_enroll.this, Main4Activity_list.class);
+                if(modifyPerson !=null){
+                    modifyPerson.kind = min_kind;
+                    if(fileDir!=null) modifyPerson.filePath = fileDir;
+                    intent.putExtra("remakemsg",modifyPerson);
+                }
+                else{
+                    enrollPerson.kind = min_kind;
+                    enrollPerson.filePath = fileDir;
+                    intent.putExtra("remakemsg",enrollPerson);
+                }
 
-                enrollPerson.kind = min_kind;
-                enrollPerson.filePath = fileDir;
-//                Toast.makeText(getApplicationContext(),enrollPerson.filePath,Toast.LENGTH_SHORT).show();
-                intent.putExtra("remakemsg",enrollPerson);
                 setResult(RESULT_OK,intent);
                 finish();
             } else

@@ -19,15 +19,17 @@ public class Person implements Parcelable {
     String filePath;
     int age;
     int birthYear;
+    boolean isValid;
 
-    public Person(String filePath, String kind, String name, String minNumFirst, String minNumLast, String enrollDate) {
-        this.filePath = filePath;
+    public Person( String kind, String name, String minNumFirst, String minNumLast, String enrollDate,String filePath, boolean isValid) {
+
         this.kind = kind;
         this.name = name;
         this.minNumFirst = minNumFirst;
         this.minNumLast = minNumLast;
         this.enrollDate = enrollDate;
-
+        this.filePath = filePath;
+        this.isValid = false;
         /*
         주민등록 번호로 age와 gender 판별하여 autoSetting
          */
@@ -57,28 +59,40 @@ public class Person implements Parcelable {
         this.filePath = null;
         this.age = 0;
         this.birthYear = 0;
+        this.isValid = false;
     }
 
-    public void copyPerson(Person p){
-        this.filePath = p.filePath;
-        this.kind = p.kind;
-        this.name = p.name;
-        this.minNumFirst = p.minNumFirst;
-        this.minNumLast = p.minNumLast;
-        this.enrollDate = p.enrollDate;
-
-    }
 
     protected Person(Parcel in) {
-        filePath = in.readString();
         kind = in.readString();
         name = in.readString();
         gender = in.readString();
         minNumFirst = in.readString();
         minNumLast = in.readString();
         enrollDate = in.readString();
+        filePath = in.readString();
         age = in.readInt();
         birthYear = in.readInt();
+        isValid = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(kind);
+        dest.writeString(name);
+        dest.writeString(gender);
+        dest.writeString(minNumFirst);
+        dest.writeString(minNumLast);
+        dest.writeString(enrollDate);
+        dest.writeString(filePath);
+        dest.writeInt(age);
+        dest.writeInt(birthYear);
+        dest.writeByte((byte) (isValid ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Person> CREATOR = new Creator<Person>() {
@@ -93,21 +107,19 @@ public class Person implements Parcelable {
         }
     };
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public void copyPerson(Person p){
+
+        this.kind = p.kind;
+        this.name = p.name;
+        this.minNumFirst = p.minNumFirst;
+        this.minNumLast = p.minNumLast;
+        this.enrollDate = p.enrollDate;
+        this.filePath = p.filePath;
+        this.age = p.age;
+        this.birthYear = p.birthYear;
+        this.gender = p.gender;
+        this.isValid = false;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(filePath);
-        dest.writeString(kind);
-        dest.writeString(name);
-        dest.writeString(gender);
-        dest.writeString(minNumFirst);
-        dest.writeString(minNumLast);
-        dest.writeString(enrollDate);
-        dest.writeInt(age);
-        dest.writeInt(birthYear);
-    }
+
 }
