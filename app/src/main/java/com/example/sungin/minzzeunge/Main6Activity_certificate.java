@@ -84,6 +84,7 @@ public class Main6Activity_certificate extends AppCompatActivity {
 
         @JavascriptInterface
         public void showHTML(String html) {
+
             /*
             CheckCode : 웹뷰에서 HTML 긁어와서 dlg로 띄우기
              */
