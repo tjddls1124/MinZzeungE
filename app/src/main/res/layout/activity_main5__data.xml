@@ -69,18 +69,17 @@
                 android:id="@+id/tvMinFirst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_span="3"
                 android:background="#ffffff"
-                android:gravity="center"
+                android:gravity="right"
                 android:padding="3dp"
-                android:text="930215"
+                android:text="930215 - "
                 android:textColor="#ff0000" />
 
             <TextView
                 android:id="@+id/tvMinLast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
                 android:background="#ffffff"
                 android:gravity="center"
                 android:padding="3dp"
@@ -89,30 +88,11 @@
 
             <ImageView
                 android:id="@+id/imageView_gender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onClick"
-                app:srcCompat="@android:drawable/btn_star_big_on" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/man" />
         </TableRow>
 
-        <TableRow android:padding="10dp">
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="등록일:" />
-
-            <TextView
-                android:id="@+id/tvRegdate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_span="2"
-                android:layout_weight="1"
-                android:paddingLeft="20dp"
-                android:text="등록일자" />
-        </TableRow>
     </TableLayout>
 
     <TextView

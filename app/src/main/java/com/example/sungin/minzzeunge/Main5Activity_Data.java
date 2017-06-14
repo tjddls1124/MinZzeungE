@@ -29,9 +29,15 @@ public class Main5Activity_Data extends AppCompatActivity {
         Intent intent = getIntent();
        thisPerson = intent.getParcelableExtra("MSG_PERSON");
 
-        tv_minF.setText(thisPerson.minNumFirst);
+        if(thisPerson.gender !=null){
+            if(thisPerson.gender.equals("여"))
+                imageView_gender.setImageResource(R.drawable.female);
+            else
+                imageView_gender.setImageResource(R.drawable.man);
+        }
+
+        tv_minF.setText(thisPerson.minNumFirst + " - ");
         tv_minL.setText(thisPerson.minNumLast);
-        tv_enroll.setText(thisPerson.enrollDate);
 //        imageView_gender.set
         Bitmap bitmap = BitmapFactory.decodeFile(thisPerson.filePath);
         imageView.setImageBitmap(bitmap);
@@ -71,7 +77,6 @@ public class Main5Activity_Data extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.imgno);
         tv_minF = (TextView)findViewById(R.id.tvMinFirst);
         tv_minL = (TextView)findViewById(R.id.tvMinLast);
-        tv_enroll = (TextView)findViewById(R.id.tvRegdate);
         tv_Valid = (TextView)findViewById(R.id.tv_isValid);
         imageView_gender = (ImageView)findViewById(R.id.imageView_gender);
         tv_kind = (TextView)findViewById(R.id.tv_kind);

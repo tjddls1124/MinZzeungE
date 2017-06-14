@@ -4,10 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.sungin.minzzeunge.Main6Activity_certificate">
 
     <WebView
         android:id="@+id/webView"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="465dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:onClick="onClick"
+        android:layout_weight="1"
+        android:text="인증취소" />
 </LinearLayout>

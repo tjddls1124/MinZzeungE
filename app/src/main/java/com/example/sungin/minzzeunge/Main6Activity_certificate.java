@@ -18,6 +18,7 @@ import java.util.Scanner;
 
 public class Main6Activity_certificate extends AppCompatActivity {
     Person thisPerson = null;
+    boolean first_approach = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,15 +94,15 @@ public class Main6Activity_certificate extends AppCompatActivity {
             인증성공 : 긁어온 Html에서 인증완료 여부 체크 후, 인텐트로 보내주기
              */
 
-            if (html.contains("도로교통공단 전산 자료와 일치합니다.")) {
+            if (html.contains("도로교통공단 전산 자료와 일치합니다.") && html.contains("암호일련번호가 일치합니다.")) {
                 Toast.makeText(getApplicationContext(), "인증에 성공하였습니다!", Toast.LENGTH_SHORT).show();
                 thisPerson.isValid = true;
                 Intent intent = new Intent(Main6Activity_certificate.this, Main5Activity_Data.class);
                 intent.putExtra("remakemsg", thisPerson);
                 setResult(RESULT_OK, intent);
                 finish();
-            } else if (html.contains("면허증 진위여부 조회"))
-                return;
+            }
+            else if(first_approach) return; //처음 웹뷰가 로드될 때를 제외하고
             else  // 다른 인증되지 않고 다른 페이지에 접근되었을 경우, 인증실패 메세지 출력.
                 Toast.makeText(getApplicationContext(), "인증에 실패하였습니다\n다시 시도하여 주십시오", Toast.LENGTH_SHORT).show();
 
