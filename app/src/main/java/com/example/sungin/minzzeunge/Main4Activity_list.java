@@ -34,27 +34,26 @@ public class Main4Activity_list extends AppCompatActivity {
         setContentView(R.layout.activity_main4_list);
         init();
 
-        mySQLiteDatabase = new MySQLiteDatabase(this,"persondb",null,1);//DB 가져오기
+        mySQLiteDatabase = new MySQLiteDatabase(this, "persondb", null, 1);//DB 가져오기
 
         Intent gintent = getIntent();
         Person p = gintent.getParcelableExtra("MSG_LOGIN");
         Person person;
-        if(p!=null){
-             person = new Person("", p.name, p.minNumFirst, p.minNumLast, "", null, false);
-        }
-        else {
+        if (p != null) {
+            person = new Person("", p.name, p.minNumFirst, p.minNumLast, "", null, false);
+        } else {
             personList = mySQLiteDatabase.getAllPersonData();
-             person = personList.get(0);
+            person = personList.get(0);
             noitem = false;
         }
         adapter = new PersonAdapter(personList, this);
         listView.setAdapter(adapter);
 
-        if(firstDB){
+        if (firstDB) {
             adapter.notifyDataSetChanged();
             firstDB = false;
         }
-        if (noitem ) {
+        if (noitem) {
             person.kind = "신분증이 등록되지 않았습니다\n신분증을 추가하세요";
             personList.add(person);
             adapter.notifyDataSetChanged();
@@ -70,7 +69,7 @@ public class Main4Activity_list extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (noitem)
                     Toast.makeText(getApplicationContext(), "등록된 신분증이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-                else{
+                else {
                     intent.putExtra("MSG_PERSON", personList.get(position));
                     startActivityForResult(intent, REQUEST_MSG_CODE2);
                     modifyPosition = position;
@@ -111,11 +110,11 @@ public class Main4Activity_list extends AppCompatActivity {
                                         personList.remove(position);
                                         mySQLiteDatabase.removeDB(personList.get(position).filePath);
 
-                                        if( personList.size() == 0 ) noitem = true;
+                                        if (personList.size() == 0) noitem = true;
                                         adapter.notifyDataSetChanged();
                                         Toast.makeText(getApplicationContext(), "선택한 신분증이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                                     }
-                                }).setNegativeButton("취소",null);
+                                }).setNegativeButton("취소", null);
                                 dlg.show();
                             }
 
@@ -130,7 +129,6 @@ public class Main4Activity_list extends AppCompatActivity {
         /*
         DB에서 가져와서 personList에 넘겨 리스트뷰 생성.
          */
-
 
 
     }
@@ -159,14 +157,15 @@ public class Main4Activity_list extends AppCompatActivity {
                 }
                 personList.add(thisPerson);
                 mySQLiteDatabase.addToDB(thisPerson);
-                noitem=false;
+                noitem = false;
                 adapter.notifyDataSetChanged();
             }
         }
         if (requestCode == REQUEST_MSG_CODE2) { //인증여부 수정 받아오기
             if (resultCode == RESULT_OK) {
                 Person thisPerson = data.getParcelableExtra("remakemsg");
-                Toast.makeText(getApplicationContext(),"선택한 신분증이 인증완료 되었습니다",Toast.LENGTH_SHORT).show();
+                if (thisPerson.isValid)
+                    Toast.makeText(getApplicationContext(), "선택한 신분증이 인증완료 되었습니다", Toast.LENGTH_SHORT).show();
                 personList.get(modifyPosition).isValid = thisPerson.isValid;
 
                 mySQLiteDatabase.removeDB(personList.get(modifyPosition).filePath); //DB에는 수정작업을 넣지 않아, 삭제하고 다시 만듦
@@ -188,7 +187,7 @@ public class Main4Activity_list extends AppCompatActivity {
                 personList.add(modifyPosition, thisPerson);
                 mySQLiteDatabase.addToDB(thisPerson);
 
-                Toast.makeText(getApplicationContext(),"수정되었습니다",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "수정되었습니다", Toast.LENGTH_SHORT).show();
 
                 modifyPosition = 0; // 초기화
                 adapter.notifyDataSetChanged();

@@ -106,7 +106,6 @@ public class Main3Activity_enroll extends AppCompatActivity {
                 if(modifyPerson !=null){
                     modifyPerson.kind = min_kind;
                     if(fileDir!=null) modifyPerson.filePath = fileDir;
-                    else modifyPerson.filePath = fileDir;
                     intent.putExtra("remakemsg",modifyPerson);
                 }
                 else{

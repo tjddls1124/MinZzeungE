@@ -4,8 +4,8 @@
     <uses-permission android:name="android.permission.INTERNET" />    <application
         android:allowBackup="true"
         android:icon="@drawable/min_phone"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="민쯩이"
+        android:roundIcon="@drawable/min"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity_Start">

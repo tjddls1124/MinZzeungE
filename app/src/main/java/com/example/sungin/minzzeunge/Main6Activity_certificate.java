@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -72,6 +73,11 @@ public class Main6Activity_certificate extends AppCompatActivity {
 
     }
 
+    public void onClick(View v){
+        finish();
+
+    }
+
     public class MyJavascriptInterface { //웹뷰에서 자바 스크립트 읽어오기
         private Context ctx;
 
@@ -103,7 +109,7 @@ public class Main6Activity_certificate extends AppCompatActivity {
                 setResult(RESULT_OK, intent);
                 finish();
             }
-            else if(first_approach) return; //처음 웹뷰가 로드될 때를 제외하고
+            else if(first_approach) first_approach = false; //처음 웹뷰가 로드될 때를 제외하고
             else  // 다른 인증되지 않고 다른 페이지에 접근되었을 경우, 인증실패 메세지 출력.
                 Toast.makeText(getApplicationContext(), "인증에 실패하였습니다\n다시 시도하여 주십시오", Toast.LENGTH_SHORT).show();
 
